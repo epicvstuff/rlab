@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ideal Gas MD Simulation – Project Summary</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0f1117;
+      color: #e8eaf0;
+      padding: 40px 20px;
+      line-height: 1.65;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    header p.subtitle {
+      margin-top: 8px;
+      color: #8892a4;
+      font-size: 1rem;
+    }
+
+    .badge-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: #1e2230;
+      border: 1px solid #2d3348;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.8rem;
+      color: #7eb8f7;
+    }
+
+    /* ── Section cards ── */
+    .card {
+      background: #1a1f2e;
+      border: 1px solid #252b3b;
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+    }
+
+    .card h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #7eb8f7;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card h2 .part-tag {
+      background: #7eb8f725;
+      border: 1px solid #7eb8f750;
+      border-radius: 6px;
+      padding: 1px 8px;
+      font-size: 0.72rem;
+      color: #7eb8f7;
+    }
+
+    .card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #c5cde0;
+      margin: 18px 0 8px;
+    }
+
+    .card p {
+      color: #b0b8cc;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    ul.steps {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul.steps li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 8px 0;
+      border-bottom: 1px solid #252b3b;
+      font-size: 0.93rem;
+      color: #b0b8cc;
+    }
+
+    ul.steps li:last-child { border-bottom: none; }
+
+    ul.steps li .step-num {
+      background: #7eb8f720;
+      color: #7eb8f7;
+      border-radius: 50%;
+      min-width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ── Formula blocks ── */
+    .formula {
+      background: #0f1117;
+      border-left: 3px solid #7eb8f7;
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.93rem;
+      color: #e2e8f0;
+    }
+
+    /* ── Results table ── */
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin-top: 12px;
+    }
+
+    .results-table th {
+      background: #252b3b;
+      color: #7eb8f7;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .results-table td {
+      padding: 9px 14px;
+      color: #b0b8cc;
+      border-bottom: 1px solid #1e2230;
+    }
+
+    .results-table tr:last-child td { border-bottom: none; }
+
+    /* ── Result highlight box ── */
+    .result-highlight {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .stat-box {
+      flex: 1;
+      min-width: 180px;
+      background: #0f1117;
+      border: 1px solid #252b3b;
+      border-radius: 10px;
+      padding: 16px 20px;
+      text-align: center;
+    }
+
+    .stat-box .label {
+      font-size: 0.75rem;
+      color: #8892a4;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 6px;
+    }
+
+    .stat-box .value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      font-family: 'Courier New', monospace;
+    }
+
+    .stat-box .sub {
+      font-size: 0.75rem;
+      color: #8892a4;
+      margin-top: 4px;
+    }
+
+    .good { color: #4ade80; }
+
+    /* ── Deliverables ── */
+    .deliverable {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: #0f1117;
+      border: 1px solid #252b3b;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+    }
+
+    .deliverable .icon {
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+
+    .deliverable .info strong {
+      display: block;
+      color: #e8eaf0;
+      font-size: 0.95rem;
+      margin-bottom: 3px;
+    }
+
+    .deliverable .info span {
+      color: #8892a4;
+      font-size: 0.85rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #3d4460;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <header>
+    <h1>3D Molecular Dynamics Simulation</h1>
+    <p class="subtitle">Simulating the Ideal Gas from First Principles &nbsp;|&nbsp; Year-End R Lab Project</p>
+    <div class="badge-row">
+      <span class="badge">Python 3</span>
+      <span class="badge">NumPy</span>
+      <span class="badge">Matplotlib</span>
+      <span class="badge">N = 100 particles</span>
+      <span class="badge">L = 10 nm box</span>
+      <span class="badge">Argon-like gas</span>
+    </div>
+  </header>
+
+  <!-- Objective -->
+  <div class="card">
+    <h2>Objective</h2>
+    <p>
+      Build a 3D Molecular Dynamics (MD) simulation of gas particles from first principles.
+      By tracking the microscopic motion of individual particles, measure the macroscopic
+      quantity <strong>Pressure</strong> and verify the Ideal Gas Law computationally.
+    </p>
+    <div class="formula">P &middot; V = N &middot; k<sub>B</sub> &middot; T</div>
+    <p>
+      The simulation uses a constant-volume, constant-N cubic box with variable temperature.
+      Particles undergo perfectly elastic wall collisions with no inter-particle interactions
+      and no gravity.
+    </p>
+  </div>
+
+  <!-- Part I -->
+  <div class="card">
+    <h2><span class="part-tag">PART I</span> Velocity Initialisation</h2>
+    <p>
+      Each particle's velocity is drawn from the <strong>Maxwell-Boltzmann distribution</strong>
+      appropriate for a target temperature T. Three correction steps ensure physical accuracy:
+    </p>
+    <ul class="steps">
+      <li>
+        <span class="step-num">1</span>
+        <span>
+          <strong>Random Sampling</strong> — each velocity component (v<sub>x</sub>, v<sub>y</sub>, v<sub>z</sub>)
+          drawn from a normal distribution with &sigma; = &radic;(k<sub>B</sub>T&nbsp;/&nbsp;m)
+        </span>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <span>
+          <strong>Zero Net Momentum</strong> — subtract the mean velocity from all particles
+          so the gas has no bulk drift
+          <div class="formula">v<sub>i</sub> &larr; v<sub>i</sub> &minus; (1/N) &Sigma; v<sub>j</sub></div>
+        </span>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <span>
+          <strong>Temperature Rescaling</strong> — scale all velocities so kinetic energy
+          matches T exactly
+          <div class="formula">&lambda; = &radic;(T<sub>target</sub> / T<sub>current</sub>) &nbsp;&nbsp;&nbsp; v<sub>i</sub> &larr; &lambda; &middot; v<sub>i</sub></div>
+        </span>
+      </li>
+    </ul>
+    <p style="margin-top:14px;">
+      Temperature is recovered from velocities via kinetic theory:
+    </p>
+    <div class="formula">(3/2) k<sub>B</sub> T &nbsp;=&nbsp; (1/2) m &lang;v&sup2;&rang;</div>
+  </div>
+
+  <!-- Part II -->
+  <div class="card">
+    <h2><span class="part-tag">PART II</span> Microscopic Engine</h2>
+    <p>
+      Each time step <em>dt</em> = 10<sup>&minus;13</sup> s advances all N particles simultaneously
+      using NumPy vectorisation.
+    </p>
+
+    <h3>Kinematics</h3>
+    <div class="formula">r<sub>new</sub> = r<sub>old</sub> + v &middot; dt</div>
+
+    <h3>Elastic Wall Collisions</h3>
+    <p>
+      When a particle crosses a wall (pos &lt; 0 or pos &gt; L) the perpendicular velocity
+      component is reversed and the particle is reflected back inside the box.
+      Each collision imparts an impulse to the wall:
+    </p>
+    <div class="formula">&Delta;p = |2 &middot; m &middot; v<sub>&perp;</sub>|</div>
+    <p>
+      All impulses are accumulated each step to compute pressure over the measurement window.
+      Inter-particle collisions and gravity are ignored (ideal gas approximation).
+    </p>
+  </div>
+
+  <!-- Part III -->
+  <div class="card">
+    <h2><span class="part-tag">PART III</span> Pressure Calculation</h2>
+    <p>
+      After 500 equilibration steps, the simulation runs for 3 000 production steps.
+      All momentum transfers to the six walls are summed, then divided by total surface area
+      and elapsed time:
+    </p>
+    <div class="formula">P = &Sigma;&Delta;p &nbsp;/&nbsp; (6L&sup2; &middot; &Delta;t)</div>
+    <p>
+      For 100 argon-like particles at 300 K in a 10 nm box this yields
+      P &asymp; 4.1 &times; 10<sup>5</sup> Pa (&asymp; 4 atm), consistent with the ideal gas law prediction.
+    </p>
+  </div>
+
+  <!-- Part IV -->
+  <div class="card">
+    <h2><span class="part-tag">PART IV</span> Deriving the Ideal Gas Law</h2>
+    <p>
+      The simulation was run at 10 different temperatures (100 K – 1000 K) with N and V held
+      constant. Pressure scales linearly with temperature, confirming <strong>P &prop; T</strong>.
+    </p>
+
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>T Target (K)</th>
+          <th>T Measured (K)</th>
+          <th>Pressure (Pa)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>100</td><td>100.0</td><td>1.382 &times; 10<sup>5</sup></td></tr>
+        <tr><td>200</td><td>200.0</td><td>2.754 &times; 10<sup>5</sup></td></tr>
+        <tr><td>300</td><td>300.0</td><td>4.132 &times; 10<sup>5</sup></td></tr>
+        <tr><td>400</td><td>400.0</td><td>5.493 &times; 10<sup>5</sup></td></tr>
+        <tr><td>500</td><td>500.0</td><td>6.904 &times; 10<sup>5</sup></td></tr>
+        <tr><td>600</td><td>600.0</td><td>8.273 &times; 10<sup>5</sup></td></tr>
+        <tr><td>700</td><td>700.0</td><td>9.684 &times; 10<sup>5</sup></td></tr>
+        <tr><td>800</td><td>800.0</td><td>1.105 &times; 10<sup>6</sup></td></tr>
+        <tr><td>900</td><td>900.0</td><td>1.244 &times; 10<sup>6</sup></td></tr>
+        <tr><td>1000</td><td>1000.0</td><td>1.382 &times; 10<sup>6</sup></td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:22px;">Final Result</h3>
+    <p>A linear fit of P vs NT/V recovers the Simulation Gas Constant (the slope):</p>
+    <div class="formula">P = k<sub>sim</sub> &middot; (N &middot; T / V)</div>
+
+    <div class="result-highlight">
+      <div class="stat-box">
+        <div class="label">Simulation Gas Constant</div>
+        <div class="value">1.3834 &times; 10<sup>&minus;23</sup></div>
+        <div class="sub">J / K</div>
+      </div>
+      <div class="stat-box">
+        <div class="label">Boltzmann Constant k<sub>B</sub></div>
+        <div class="value">1.3806 &times; 10<sup>&minus;23</sup></div>
+        <div class="sub">J / K</div>
+      </div>
+      <div class="stat-box">
+        <div class="label">Relative Error</div>
+        <div class="value good">0.20 %</div>
+        <div class="sub">simulation vs theory</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deliverables -->
+  <div class="card">
+    <h2>Deliverables</h2>
+    <div class="deliverable">
+      <div class="icon">&#128202;</div>
+      <div class="info">
+        <strong>ideal_gas_law.png</strong>
+        <span>P vs NT/V scatter plot with linear fit. Slope matches k<sub>B</sub> to within 0.20%, proving the Ideal Gas Law holds in the simulation.</span>
+      </div>
+    </div>
+    <div class="deliverable">
+      <div class="icon">&#127916;</div>
+      <div class="info">
+        <strong>gas_animation.gif</strong>
+        <span>60-frame 3D animation of 100 argon-like particles bouncing inside a 10 nm cubic box at 300 K.</span>
+      </div>
+    </div>
+    <div class="deliverable">
+      <div class="icon">&#128187;</div>
+      <div class="info">
+        <strong>ideal_gas_md.py</strong>
+        <span>Single Python script implementing all four lab parts using only NumPy and Matplotlib.</span>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Instructors: Shilpa Sattiraju &amp; Mayank Agrawal &nbsp;&bull;&nbsp; Year-End R Lab Project
+  </footer>
+
+</div>
+</body>
+</html>
